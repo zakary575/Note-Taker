@@ -31,4 +31,19 @@ const readAndAppend = (content, file) => {
   });
 };
 
-module.exports = { readFromFile, writeToFile, readAndAppend };
+const deleteById = (destination, id) => {
+  fs.readFile(destination, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      const parsedData = JSON.parse(data);
+      const filteredArray = parsedData.filter((note) => String(note.id) !== String(id));
+      
+      fs.writeFile(destination, JSON.stringify(filteredArray, null, 4), (err) =>
+        err ? console.error(err) : console.info(`\nData deleted at ${destination}`)
+      );
+    }
+  })
+}
+
+module.exports = { readFromFile, writeToFile, readAndAppend, deleteById };
